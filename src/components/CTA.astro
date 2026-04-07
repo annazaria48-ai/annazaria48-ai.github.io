@@ -1,0 +1,31 @@
+---
+import { siteConfig } from '../site';
+
+interface Props {
+  label?: string;
+  class?: string;
+}
+
+const { label = 'Записаться на консультацию', class: className = '' } = Astro.props;
+---
+
+<div class:list={['cta-block', className]}>
+  <a class="btn" href={siteConfig.telegramUrl}>{label}</a>
+  <p class="cta-block__alt">
+    или напишите в
+    <a href={siteConfig.whatsappUrl}>WhatsApp</a>
+  </p>
+</div>
+
+<style>
+  .cta-block {
+    margin: var(--space-md) 0;
+    text-align: center;
+  }
+
+  .cta-block__alt {
+    margin: var(--space-sm) 0 0;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+  }
+</style>

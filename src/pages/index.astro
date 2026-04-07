@@ -1,0 +1,189 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSection from '../components/HeroSection.astro';
+import CTA from '../components/CTA.astro';
+import { siteConfig } from '../site';
+
+const base = import.meta.env.BASE_URL;
+
+const title = `Психолог онлайн — интегративный подход | ${siteConfig.psychologistName}`;
+const description =
+  'Консультация психолога онлайн и очно. Работаю с тревогой, травмами, самооценкой и отношениями. Интегративный подход — метод подбирается под вас. Запишитесь на первую консультацию.';
+---
+
+<BaseLayout title={title} description={description}>
+  <HeroSection />
+
+  <section class="section section--alt" aria-labelledby="help-heading">
+    <div class="container container--narrow">
+      <h2 id="help-heading">Кому я помогаю</h2>
+      <p>Если вы узнаёте себя хотя бы в одном из этих описаний — я могу помочь.</p>
+      <div class="card-grid card-grid--2">
+        <article class="card">
+          <h3>Тревога не отпускает</h3>
+          <p>
+            Вы постоянно на взводе, ждёте плохого, тело напряжено. Панические атаки, бессонница, навязчивые мысли. Вы устали так жить, но не знаете, как выйти из этого круга.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Прошлое всё ещё болит</h3>
+          <p>
+            Детские травмы, сложные отношения с родителями, пережитое насилие или потеря — всё это продолжает влиять на вашу жизнь сегодня. Вы хотите отпустить, но не получается.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Отношения буксуют</h3>
+          <p>
+            Одни и те же сценарии повторяются: вы притягиваете не тех людей, теряете себя в отношениях или не можете построить близость. Вам хочется по-другому, но вы не понимаете, что менять.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Внутри — конфликт</h3>
+          <p>
+            Одна часть вас хочет одного, другая — противоположного. Вы разрываетесь, критикуете себя, не можете принять решение. Чувствуете, что внутри живут несколько «я», и они не в ладах.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Тело говорит за вас</h3>
+          <p>
+            Головные боли, проблемы с ЖКТ, хроническая усталость — врачи не находят причин, а симптомы не проходят. Возможно, тело выражает то, что вы не можете сказать словами.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Хочется разобраться в себе</h3>
+          <p>
+            Нет конкретной «проблемы», но есть ощущение, что вы живёте не свою жизнь. Хочется понять себя глубже, найти свой путь, перестать подстраиваться.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="approach-heading">
+    <div class="container container--narrow">
+      <h2 id="approach-heading">Мой подход</h2>
+      <h3>Терапия, которая подстраивается под вас — а не наоборот</h3>
+      <p>
+        Я работаю в интегративном подходе. Это значит, что я не ограничиваюсь одним методом, а подбираю инструменты под вашу конкретную ситуацию, задачу и особенности.
+      </p>
+      <p>
+        У каждого человека — свой внутренний язык. Кому-то ближе работа через тело и образы, кому-то — через разговор и осознание, кому-то нужно сначала мягко прикоснуться к тому, что скрыто глубоко внутри. Я владею разными методами и выбираю тот, который даст результат именно вам.
+      </p>
+      <p>
+        <strong>Вам не нужно заранее разбираться в терапевтических подходах.</strong> На первой встрече мы вместе определим, что подойдёт — и я объясню, что мы делаем и зачем. Никакой магии — только понятная, бережная работа.
+      </p>
+
+      <h3>Что это значит на практике</h3>
+      <ul>
+        <li>
+          <strong>Гибкость.</strong> Если один путь не даёт результата — мы не буксуем, а меняем стратегию. У меня в арсенале несколько научно обоснованных методов, и я комбинирую их под вашу задачу.
+        </li>
+        <li>
+          <strong>Глубина.</strong> Мы работаем не только с симптомами, но и с тем, что их вызывает. Иногда корни проблемы лежат глубже, чем кажется — и интегративный подход позволяет добраться до них бережно и безопасно.
+        </li>
+        <li>
+          <strong>Индивидуальность.</strong> Нет двух одинаковых людей — и нет двух одинаковых терапий. Я выстраиваю процесс вокруг вас, ваших целей и вашего темпа.
+        </li>
+      </ul>
+      <p>Какой путь подойдёт вам — определим вместе на первой встрече.</p>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="how-heading">
+    <div class="container container--narrow">
+      <h2 id="how-heading">Как я работаю</h2>
+      <ol class="steps">
+        <li>
+          <strong>Знакомство</strong> — на первой встрече мы обсуждаем ваш запрос, и я объясняю, какой подход подойдёт именно вам. Это не обязательство — просто возможность понять, комфортно ли нам работать вместе.
+        </li>
+        <li>
+          <strong>Регулярные сессии</strong> — встречаемся 1 раз в неделю по 60 минут. Онлайн или в кабинете. Каждая сессия — это шаг к вашей цели.
+        </li>
+        <li>
+          <strong>Результат</strong> — вы замечаете изменения в самочувствии, отношениях, принятии решений. Мы закрепляем результат и завершаем работу, когда вы готовы.
+        </li>
+      </ol>
+      <p>
+        <a href={`${base}process`}>Подробнее о процессе терапии →</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="about-short-heading">
+    <div class="container container--narrow">
+      <h2 id="about-short-heading">Обо мне — коротко</h2>
+      <p>
+        Я — {siteConfig.shortName}, психолог-консультант. Работаю в интегративном подходе — подбираю метод под человека и ситуацию. {siteConfig.stats.years}+ лет помогаю людям находить опору внутри себя.
+      </p>
+      <p>
+        Прохожу регулярную супервизию и продолжаю собственную терапию — для меня это часть профессиональной этики и честности перед клиентами.
+      </p>
+      <p>
+        <a href={`${base}about`}>Узнать больше обо мне →</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="stats-heading">
+    <div class="container container--narrow">
+      <h2 id="stats-heading">Цифры</h2>
+      <div class="stats">
+        <div>
+          <div class="stat__value">{siteConfig.stats.years}+</div>
+          <div class="stat__label">лет практики</div>
+        </div>
+        <div>
+          <div class="stat__value">{siteConfig.stats.clients}+</div>
+          <div class="stat__label">клиентов прошли терапию</div>
+        </div>
+        <div>
+          <div class="stat__value">{siteConfig.stats.hours}+</div>
+          <div class="stat__label">часов обучения и супервизий</div>
+        </div>
+        <div>
+          <div class="stat__value stat__value--small">Под вас</div>
+          <div class="stat__label">Интегративный подход — метод подбирается индивидуально</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section final-cta" aria-labelledby="cta-heading">
+    <div class="container container--narrow">
+      <h2 id="cta-heading">Запишитесь на первую консультацию</h2>
+      <p>Первый шаг — самый сложный. Но вы уже здесь.</p>
+      <p>Напишите мне — и мы вместе разберёмся, чем я могу помочь.</p>
+      <CTA />
+      <p class="contact-line">
+        📱 WhatsApp: <a href={siteConfig.whatsappUrl}>{siteConfig.whatsappDisplay}</a>
+      </p>
+      <p class="contact-line">
+        💬 Telegram: <a href={siteConfig.telegramUrl}>{siteConfig.telegramDisplay}</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .steps {
+    padding-left: 1.25rem;
+  }
+
+  .steps li {
+    margin-bottom: var(--space-sm);
+  }
+
+  .final-cta {
+    text-align: center;
+  }
+
+  .contact-line {
+    margin: 0.25rem 0;
+    font-size: 0.95rem;
+  }
+
+  .stat__value--small {
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+</style>

@@ -1,0 +1,89 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { siteConfig } from '../../site';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const title = `Блог | ${siteConfig.psychologistName}`;
+const description =
+  'Статьи о тревоге, гипнотерапии, IFS, арт-терапии, самооценке и психосоматике. Полезные материалы от психолога.';
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="section">
+    <div class="container container--narrow">
+      <h1>Блог</h1>
+      <p class="lead">Материалы для тех, кто хочет разобраться в себе глубже.</p>
+      <ul class="post-list">
+        {posts.map((post) => (
+          <li class="post-list__item">
+            <article>
+              <h2 class="post-list__title">
+                <a href={`${import.meta.env.BASE_URL}blog/${post.slug}`}>{post.data.title}</a>
+              </h2>
+              <time class="post-list__date" datetime={post.data.date.toISOString()}>
+                {post.data.date.toLocaleDateString('ru-RU', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </time>
+              <p class="post-list__desc">{post.data.description}</p>
+            </article>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .lead {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-lg);
+  }
+
+  .post-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .post-list__item {
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .post-list__item:first-child {
+    padding-top: 0;
+  }
+
+  .post-list__title {
+    font-size: 1.25rem;
+    margin: 0 0 0.35rem;
+  }
+
+  .post-list__title a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .post-list__title a:hover {
+    color: var(--color-accent);
+  }
+
+  .post-list__date {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .post-list__desc {
+    margin: 0;
+    font-size: 0.98rem;
+  }
+</style>

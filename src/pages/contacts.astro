@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CTA from '../components/CTA.astro';
+import { siteConfig } from '../site';
+
+const title = `Запись на консультацию к психологу | ${siteConfig.psychologistName}`;
+const description = `Запишитесь на консультацию к психологу ${siteConfig.psychologistName}. Онлайн и очно в ${siteConfig.city}. Интегративный подход. Отвечу в течение 24 часов.`;
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="section">
+    <div class="container container--narrow prose">
+      <h1>Контакты и запись</h1>
+      <p>
+        Вы сделали главное — решили, что готовы к переменам. Напишите мне удобным способом — я отвечу в течение 24 часов.
+      </p>
+
+      <h2>Быстрая запись</h2>
+
+      <h3>WhatsApp</h3>
+      <p>
+        <a href={siteConfig.whatsappUrl}>{siteConfig.whatsappDisplay}</a> — откроется чат. Напишите коротко, что вас беспокоит.
+      </p>
+
+      <h3>Telegram</h3>
+      <p>
+        <a href={siteConfig.telegramUrl}>{siteConfig.telegramDisplay}</a> — текстом или голосовым, как удобнее.
+      </p>
+
+      <h3>Email</h3>
+      <p>
+        <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a> — для тех, кому удобнее почта.
+      </p>
+
+      <h3>Телефон</h3>
+      <p>
+        <a href={`tel:${siteConfig.phoneTel}`}>{siteConfig.phoneDisplay}</a>
+      </p>
+
+      <div class="highlight-box">
+        <p><strong>Форма на сайте не используется</strong> — так проще и быстрее написать напрямую в мессенджер или на почту.</p>
+      </div>
+
+      <CTA />
+
+      <h2>Очный приём</h2>
+      <p>
+        <strong>Адрес:</strong> {siteConfig.city}, [улица, дом] — укажите при публикации<br />
+        <strong>Ближайшее метро:</strong> [станция]<br />
+        <strong>Как добраться:</strong> [краткое описание]
+      </p>
+      <div class="photo-placeholder" role="img" aria-label="Фото кабинета">
+        <span>Фото кабинета — при публикации</span>
+      </div>
+
+      <h2>Время работы</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>День</th>
+            <th>Часы</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Понедельник</td><td>[XX:XX — XX:XX]</td></tr>
+          <tr><td>Вторник</td><td>[XX:XX — XX:XX]</td></tr>
+          <tr><td>Среда</td><td>[XX:XX — XX:XX]</td></tr>
+          <tr><td>Четверг</td><td>[XX:XX — XX:XX]</td></tr>
+          <tr><td>Пятница</td><td>[XX:XX — XX:XX]</td></tr>
+          <tr><td>Суббота</td><td>[XX:XX — XX:XX]</td></tr>
+          <tr><td>Воскресенье</td><td>Выходной</td></tr>
+        </tbody>
+      </table>
+      <p><em>Запись заранее. Если времени нет в расписании — напишите, найдём окно.</em></p>
+
+      <h2>Соцсети</h2>
+      <ul>
+        <li><strong>Telegram-канал:</strong> [ссылка]</li>
+        <li>
+          <strong>Instagram*:</strong> [@...] — <em>*Meta признана экстремистской организацией на территории РФ</em>
+        </li>
+        <li><strong>VK:</strong> [ссылка]</li>
+      </ul>
+
+      <h2>Часто спрашивают перед записью</h2>
+      <h3>Нужно ли готовиться к первой встрече?</h3>
+      <p>Нет. Просто приходите. Не нужно заранее формулировать запрос.</p>
+      <h3>Можно ли записаться на завтра?</h3>
+      <p>Зависит от расписания. Напишите — скажу ближайшее свободное время.</p>
+      <h3>Работаете с парами?</h3>
+      <p>[Да / Нет / По запросу — укажите]</p>
+      <h3>Работаете с детьми или подростками?</h3>
+      <p>[Укажите при публикации]</p>
+      <h3>Что если я передумаю после первой встречи?</h3>
+      <p>Ничего. Первая встреча — не обязательство.</p>
+
+      <h2>Я рада, что вы здесь</h2>
+      <p>Написать психологу — уже поступок. Вы уже сделали первый шаг.</p>
+      <CTA />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .highlight-box {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: var(--space-md);
+    margin: var(--space-md) 0;
+  }
+
+  .photo-placeholder {
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius);
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-md);
+    margin: var(--space-md) 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    text-align: center;
+  }
+</style>

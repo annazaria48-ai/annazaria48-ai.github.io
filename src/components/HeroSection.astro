@@ -1,0 +1,73 @@
+---
+import { siteConfig } from '../site';
+import CTA from './CTA.astro';
+---
+
+<section class="hero section">
+  <div class="container hero__grid">
+    <div class="hero__text">
+      <p class="hero__eyebrow">{siteConfig.psychologistName} — психолог</p>
+      <h1>Помогаю вернуть контакт с собой, когда внутри тревога, боль или пустота</h1>
+      <p class="hero__lead">
+        Работаю в интегративном подходе — подбираю метод, который подходит именно вам и вашей ситуации.
+      </p>
+      <p class="hero__meta">
+        Консультации онлайн и очно в {siteConfig.city}.
+      </p>
+      <CTA />
+    </div>
+    <div class="hero__visual">
+      <div class="hero__photo-placeholder">
+        <span class="hero__photo-note">Фото: профессиональный тёплый портрет</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero__grid {
+    display: grid;
+    gap: var(--space-lg);
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .hero__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .hero__eyebrow {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-xs);
+  }
+
+  .hero__lead {
+    font-size: 1.1rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .hero__meta {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+  }
+
+  .hero__photo-placeholder {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius);
+    background: linear-gradient(145deg, var(--color-bg-alt), var(--color-border));
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: var(--space-md);
+    box-shadow: var(--shadow);
+  }
+
+  .hero__photo-note {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+</style>

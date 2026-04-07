@@ -1,0 +1,71 @@
+---
+import { siteConfig } from '../site';
+
+const base = import.meta.env.BASE_URL;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer section section--alt">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div>
+        <p class="site-footer__name">{siteConfig.psychologistName}</p>
+        <p class="site-footer__muted">Психолог-консультант · {siteConfig.city}</p>
+      </div>
+      <div class="site-footer__contacts">
+        <p>
+          <a href={siteConfig.whatsappUrl}>WhatsApp</a>
+          ·
+          <a href={siteConfig.telegramUrl}>Telegram</a>
+        </p>
+        <p>
+          <a href={`tel:${siteConfig.phoneTel}`}>{siteConfig.phoneDisplay}</a>
+        </p>
+      </div>
+    </div>
+    <p class="site-footer__copy">&copy; {year} {siteConfig.psychologistName}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer__grid {
+    display: grid;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+  }
+
+  @media (min-width: 640px) {
+    .site-footer__grid {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+  }
+
+  .site-footer__name {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+  }
+
+  .site-footer__muted {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+  }
+
+  .site-footer__contacts {
+    font-size: 0.95rem;
+  }
+
+  .site-footer__contacts p {
+    margin: 0 0 0.35rem;
+  }
+
+  .site-footer__copy {
+    margin: 0;
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border);
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+</style>
