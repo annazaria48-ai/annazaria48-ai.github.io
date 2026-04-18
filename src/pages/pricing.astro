@@ -2,137 +2,583 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CTA from '../components/CTA.astro';
 import { siteConfig } from '../site';
+import { canonicalFromAstro, innerPageJsonLd } from '../lib/seo';
 
 const title = `Стоимость консультации психолога | Цены и форматы | ${siteConfig.psychologistName}`;
 const description =
-  'Прозрачные цены на консультацию психолога. Индивидуальные сессии онлайн и очно. Пакеты со скидкой. Запишитесь на первую встречу.';
+  'Прозрачные цены на консультацию психолога. Индивидуальные сессии онлайн и очно. Пакеты со скидкой. Запишитесь на пробную консультацию.';
+
+const canonical = canonicalFromAstro(Astro.site, Astro.url);
+const jsonLd = innerPageJsonLd({ canonical, title, description });
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<BaseLayout title={title} description={description}>
-  <section class="section">
-    <div class="container container--narrow prose">
-      <h1>Стоимость и форматы</h1>
-      <p>
-        Я считаю важным, чтобы вы знали стоимость до того, как запишетесь. Никаких скрытых платежей и неожиданностей.
-      </p>
-
-      <h2>Индивидуальная консультация</h2>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Онлайн</th>
-            <th>Очно</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Длительность</strong></td>
-            <td>60 минут</td>
-            <td>60 минут</td>
-          </tr>
-          <tr>
-            <td><strong>Стоимость</strong></td>
-            <td>[X] ₽</td>
-            <td>[X] ₽</td>
-          </tr>
-          <tr>
-            <td><strong>Формат</strong></td>
-            <td>Zoom / Google Meet / Telegram</td>
-            <td>Кабинет в {siteConfig.city}</td>
-          </tr>
-        </tbody>
-      </table>
-      <p>
-        Первая консультация проходит по стандартной стоимости — это полноценная рабочая встреча, а не «ознакомительный звонок».
-      </p>
-
-      <h2>Пакеты сессий</h2>
-      <p>Если вы готовы к регулярной работе — пакеты помогут сэкономить.</p>
-      <h3>Пакет «Старт» — 5 сеансов</h3>
-      <ul>
-        <li><strong>Стоимость:</strong> [X] ₽ (вместо [X] ₽)</li>
-        <li><strong>Экономия:</strong> [X] ₽ ([X]%)</li>
-        <li>Действителен 2 месяца</li>
-        <li>Возможность переноса сеанса за 24 часа</li>
-      </ul>
-      <h3>Пакет «Глубокая работа» — 10 сеансов</h3>
-      <ul>
-        <li><strong>Стоимость:</strong> [X] ₽ (вместо [X] ₽)</li>
-        <li><strong>Экономия:</strong> [X] ₽ ([X]%)</li>
-        <li>Действителен 4 месяца</li>
-        <li>Приоритетная запись на удобное время</li>
-        <li>Возможность переноса сеанса за 24 часа</li>
-      </ul>
-
-      <h2>Что входит в стоимость</h2>
-      <ul>
-        <li>60 минут работы — метод подбирается индивидуально под ваш запрос</li>
-        <li>Интегративный подход: комбинация инструментов под вашу ситуацию</li>
-        <li>При необходимости — рекомендации и практики между сеансами</li>
-        <li>Конфиденциальность и соблюдение профессиональной этики</li>
-      </ul>
-
-      <h2>Форматы работы</h2>
-      <h3>Онлайн</h3>
-      <p>
-        Нужен стабильный интернет, камера, наушники и тихое место. Если понадобятся материалы (бумага, карандаши) — скажу заранее.
-      </p>
-      <h3>Очно</h3>
-      <p>
-        Кабинет в {siteConfig.city} ([район / метро — укажите при публикации]). Уютное пространство для терапии.
-      </p>
-
-      <h2>Оплата</h2>
-      <ul>
-        <li>Перевод на карту (Сбербанк / Тинькофф)</li>
-        <li>СБП (система быстрых платежей)</li>
-      </ul>
-      <p>Оплата производится до сессии. После оплаты вы получите подтверждение записи.</p>
-
-      <h2>Политика отмены и переноса</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Когда отменяете</th>
-            <th>Что происходит</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>За 24+ часа</strong></td>
-            <td>Полный возврат или перенос на другое время</td>
-          </tr>
-          <tr>
-            <td><strong>За 12–24 часа</strong></td>
-            <td>Перенос на другое время (возврат 50%)</td>
-          </tr>
-          <tr>
-            <td><strong>Менее чем за 12 часов</strong></td>
-            <td>Сеанс считается состоявшимся (перенос по договорённости)</td>
-          </tr>
-        </tbody>
-      </table>
-      <p>
-        Я тоже предупреждаю о переносе минимум за 24 часа. Если по моей инициативе сеанс отменяется — находим ближайшее удобное время.
-      </p>
-
-      <h2>Частые вопросы о стоимости</h2>
-      <h3>Почему так дорого / дёшево?</h3>
-      <p>Стоимость отражает опыт, образование, супервизию и личную терапию.</p>
-      <h3>Есть ли скидки?</h3>
-      <p>Пакеты сессий — это и есть скидка.</p>
-      <h3>Можно ли оплатить одну пробную сессию?</h3>
-      <p>Да. Первая сессия оплачивается отдельно, как обычная консультация.</p>
-      <h3>Как долго действуют пакеты?</h3>
-      <p>5 сеансов — 2 месяца; 10 сеансов — 4 месяца. Не успеваете — напишите, обсудим продление.</p>
-
-      <h2>Запишитесь</h2>
-      <CTA />
-      <p>
-        📱 WhatsApp: <a href={siteConfig.whatsappUrl}>{siteConfig.whatsappDisplay}</a><br />
-        💬 Telegram: <a href={siteConfig.telegramUrl}>{siteConfig.telegramDisplay}</a>
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <section class="page-hero section">
+    <div class="container">
+      <h1>Цены и форматы</h1>
+      <p class="page-hero__lead">
+        Хочу, чтобы вы знали всё заранее — без сюрпризов и неловкости. Стоимость, форматы и условия отмены — всё прозрачно. Если что-то непонятно или нужен другой формат, просто напишите — найдём решение.
       </p>
     </div>
   </section>
+
+  <!-- Основные тарифы -->
+  <section class="pricing-cards section section--alt" aria-labelledby="pricing-heading">
+    <div class="container">
+      <h2 id="pricing-heading" class="visually-hidden">Тарифы</h2>
+      <div class="pricing-grid">
+        <div class="pricebox pricebox--free">
+          <div class="pricebox__header">
+            <span class="pricebox__format">Пробная консультация</span>
+            <p class="pricebox__note">Онлайн</p>
+          </div>
+          <div class="pricebox__price">
+            <span class="price-num price-num--free">Бесплатно</span>
+          </div>
+          <ul class="pricebox__list">
+            <li>30 минут</li>
+            <li>Знакомство и первый разговор</li>
+            <li>Разрабатываем примерный план дальнейшей работы</li>
+          </ul>
+        </div>
+
+        <div class="pricebox">
+          <div class="pricebox__header">
+            <span class="pricebox__format">Онлайн</span>
+          </div>
+          <div class="pricebox__price">
+            <span class="price-num">3 000 ₽</span>
+            <span class="price-per">/ сеанс</span>
+          </div>
+          <ul class="pricebox__list">
+            <li>90 минут работы</li>
+            <li>Стабильный интернет, камера, наушники</li>
+            <li>Полная оплата за день до встречи</li>
+          </ul>
+        </div>
+
+        <div class="pricebox pricebox--featured">
+          <div class="pricebox__header">
+            <span class="pricebox__format">Очно</span>
+            <p class="pricebox__note">Кабинет в {siteConfig.city}</p>
+          </div>
+          <div class="pricebox__price">
+            <span class="price-num">4 000 ₽</span>
+            <span class="price-per">/ сеанс</span>
+          </div>
+          <ul class="pricebox__list">
+            <li>90 минут работы</li>
+            <li>Живой контакт и присутствие</li>
+            <li>Полная оплата за день до встречи</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Пакеты -->
+  <section class="packages section" aria-labelledby="packages-heading">
+    <div class="container">
+      <span class="eyebrow">Экономия</span>
+      <h2 id="packages-heading" style="margin-top: 0.25rem">Пакеты сессий</h2>
+      <p style="color: var(--color-text-muted); margin-bottom: var(--space-lg)">
+        Регулярная работа даёт результат глубже и быстрее. Пакеты — это возможность не думать об организационном и сосредоточиться на главном: на себе и своих изменениях.
+      </p>
+      <div class="packages-grid">
+        <div class="pkg">
+          <div class="pkg__top">
+            <p class="pkg__name">Старт</p>
+            <p class="pkg__sessions">5 сеансов</p>
+          </div>
+          <div class="pkg__pricing">
+            <span class="pkg__price">13 500 ₽</span>
+            <span class="pkg__was">вместо 15 000 ₽</span>
+          </div>
+          <div class="pkg__save">Экономия 1 500 ₽ (10%)</div>
+          <p class="pkg__per">2 700 ₽ за сеанс в пакете</p>
+          <ul class="pkg__list">
+            <li>90 минут на сеанс</li>
+            <li>Онлайн или очно — по договорённости</li>
+            <li>Действителен 2 месяца</li>
+          </ul>
+        </div>
+
+        <div class="pkg pkg--accent">
+          <div class="pkg__top">
+            <p class="pkg__name">Глубокая работа</p>
+            <p class="pkg__sessions">10 сеансов</p>
+          </div>
+          <div class="pkg__pricing">
+            <span class="pkg__price">25 000 ₽</span>
+            <span class="pkg__was">вместо 30 000 ₽</span>
+          </div>
+          <div class="pkg__save">Экономия 5 000 ₽ (17%)</div>
+          <p class="pkg__per">2 500 ₽ за сеанс в пакете</p>
+          <ul class="pkg__list">
+            <li>90 минут на сеанс</li>
+            <li>Онлайн или очно — по договорённости</li>
+            <li>Действителен 4 месяца</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Отмена -->
+  <section class="cancellation section section--blue" aria-labelledby="cancel-heading">
+    <div class="container" style="max-width: var(--max-width)">
+      <h2 id="cancel-heading">Отмена и перенос</h2>
+      <div class="cancel-table">
+        <div class="cancel-row cancel-row--head">
+          <span>Когда отменяете</span>
+          <span>Что происходит</span>
+        </div>
+        <div class="cancel-row">
+          <span class="cancel-row__time cancel-row__time--green">За 24+ часа</span>
+          <span>Полный возврат или перенос на другое время</span>
+        </div>
+        <div class="cancel-row">
+          <span class="cancel-row__time cancel-row__time--yellow">За 12–24 часа</span>
+          <span>Перенос на другое время (возврат 50%)</span>
+        </div>
+        <div class="cancel-row">
+          <span class="cancel-row__time cancel-row__time--red">Менее 12 часов</span>
+          <span>Сеанс считается состоявшимся (перенос по договорённости)</span>
+        </div>
+      </div>
+      <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-top: var(--space-md)">
+        Я тоже предупреждаю о переносе минимум за 24 часа. Если по моей инициативе сеанс отменяется — находим ближайшее удобное время.
+      </p>
+    </div>
+  </section>
+
+  <!-- Призыв к действию -->
+  <section class="cta-section section section--alt" aria-labelledby="cta-heading">
+    <div class="container" style="max-width: var(--max-width); text-align: center">
+      <h2 id="cta-heading">Готовы начать?</h2>
+      <p style="font-size: 1rem; color: var(--color-text-muted); margin: 0.5rem auto 0">
+        Напишите — обсудим ваш запрос, подберём время и формат. Пробная консультация ни к чему не обязывает: это просто возможность познакомиться и понять, подходим ли мы друг другу.
+      </p>
+      <CTA />
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .page-hero {
+    padding-top: calc(var(--space-xl) / 2);
+    padding-bottom: var(--space-lg);
+  }
+
+  .page-hero__lead {
+    max-width: 100%;
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+    margin-top: var(--space-sm);
+    text-align: justify;
+  }
+
+  /* Pricing cards */
+  .pricing-grid {
+    display: grid;
+    gap: var(--space-md);
+    max-width: 780px;
+    margin-inline: auto;
+  }
+
+  @media (min-width: 640px) {
+    .pricing-grid {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: auto auto 1fr;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .pricing-grid {
+      grid-template-columns: repeat(3, 1fr);
+      max-width: 960px;
+    }
+  }
+
+  .pricebox {
+    background: var(--color-surface-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    position: relative;
+  }
+
+  @media (min-width: 640px) {
+    .pricebox {
+      display: grid;
+      grid-row: span 3;
+      grid-template-rows: subgrid;
+      row-gap: var(--space-sm);
+    }
+  }
+
+  .pricebox--featured {
+  }
+
+  .pricebox--free {
+    border-style: dashed;
+    padding-bottom: calc(var(--space-md) + 20px);
+  }
+
+  .pricebox__cta-btn {
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    background: #ebe7f2;
+    color: var(--color-accent, #5c3d7a);
+    border: 1px solid rgba(92, 61, 122, 0.3);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.45rem 1.4rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(92, 61, 122, 0.1);
+    transition: background 0.18s, box-shadow 0.18s;
+  }
+
+  .pricebox__cta-btn:hover {
+    background: #ddd6ea;
+    box-shadow: 0 4px 14px rgba(92, 61, 122, 0.18);
+  }
+
+  .pricebox__badge--free {
+    background: var(--color-accent-warm, #c8805a);
+  }
+
+  .price-num--free {
+    font-size: 1.5rem;
+  }
+
+  .pricebox__badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-accent);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-pill);
+    white-space: nowrap;
+  }
+
+  .pricebox__header {
+    min-height: 3.1rem;
+  }
+
+  .pricebox__format {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    font-weight: 600;
+    display: block;
+  }
+
+  .pricebox__note {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .pricebox__price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+  }
+
+  .price-num {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1;
+  }
+
+  .price-per {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  .pricebox__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .pricebox__list li {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    padding-left: 1.1rem;
+    position: relative;
+  }
+
+  .pricebox__list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-size: 0.8rem;
+  }
+
+  /* Packages */
+  .packages-grid {
+    display: grid;
+    gap: var(--space-lg);
+    max-width: 880px;
+    margin-inline: auto;
+  }
+
+  @media (min-width: 640px) {
+    .packages-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .pkg {
+    background: var(--color-surface-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg) var(--space-md);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    min-height: 22rem;
+  }
+
+  .pkg--accent {
+    background: linear-gradient(
+      165deg,
+      rgba(92, 61, 122, 0.1) 0%,
+      rgba(92, 61, 122, 0.05) 55%,
+      var(--color-surface-white) 100%
+    );
+    border-color: rgba(92, 61, 122, 0.22);
+  }
+
+  .pkg--accent .pkg__save {
+    color: var(--color-accent);
+  }
+
+  .pkg__top {
+    padding-bottom: var(--space-sm);
+    margin-bottom: 0.15rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .pkg__name {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 1.25rem;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .pkg__sessions {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin: 0.35rem 0 0;
+  }
+
+  .pkg__pricing {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 0.65rem;
+    margin-top: 0.15rem;
+  }
+
+  .pkg__price {
+    font-family: var(--font-serif);
+    font-size: 2.1rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .pkg__was {
+    font-size: 0.8rem;
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  .pkg__save {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+
+  .pkg__per {
+    margin: 0;
+    padding: 0.65rem 0.85rem;
+    font-size: 0.9rem;
+    line-height: 1.45;
+    color: var(--color-text-muted);
+    background: var(--color-bg-alt);
+    border-radius: var(--radius);
+  }
+
+  .pkg--accent .pkg__per {
+    background: rgba(255, 255, 255, 0.65);
+  }
+
+  .pkg__list {
+    list-style: none;
+    padding: 0;
+    margin: 0.25rem 0 0;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .pkg__list li {
+    padding-left: 1.15rem;
+    position: relative;
+    color: var(--color-text-muted);
+    line-height: 1.45;
+  }
+
+  .pkg__list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-size: 0.8rem;
+    top: 0.15em;
+    opacity: 0.85;
+  }
+
+  /* Includes */
+  .includes__grid {
+    display: grid;
+    gap: var(--space-sm);
+    margin-top: var(--space-lg);
+  }
+
+  @media (min-width: 640px) {
+    .includes__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .inc-item {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    background: var(--color-surface-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .inc-item__dot {
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    margin-top: 0.55rem;
+  }
+
+  .inc-item p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  /* Cancel */
+  .cancellation p {
+    color: rgba(255, 255, 255, 0.75) !important;
+  }
+
+  .cancel-table {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    margin-top: var(--space-md);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .cancel-row {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: var(--space-sm);
+    padding: 0.85rem var(--space-md);
+    background: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: 0.9rem;
+    align-items: center;
+    color: #fff;
+  }
+
+  .cancel-row:last-child {
+    border-bottom: none;
+  }
+
+  .cancel-row--head {
+    background: rgba(255, 255, 255, 0.06);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .cancel-row__time {
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-pill);
+    display: inline-block;
+  }
+
+  .cancel-row__time--green { background: rgba(255, 255, 255, 0.18); color: #fff; }
+  .cancel-row__time--yellow { background: rgba(255, 206, 120, 0.2); color: #ffd591; }
+  .cancel-row__time--red { background: rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.75); }
+
+  /* Payment */
+  .payment-methods {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: var(--space-md);
+  }
+
+  .pay-method {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    background: var(--color-surface-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+  }
+</style>

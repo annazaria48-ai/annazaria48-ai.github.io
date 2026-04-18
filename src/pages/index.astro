@@ -1,189 +1,847 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import HeroSection from '../components/HeroSection.astro';
 import CTA from '../components/CTA.astro';
 import { siteConfig } from '../site';
+import { canonicalFromAstro, homeJsonLd } from '../lib/seo';
 
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-const title = `Психолог онлайн — интегративный подход | ${siteConfig.psychologistName}`;
+const title = `${siteConfig.psychologistName} — психолог-консультант | Интегративный подход`;
 const description =
-  'Консультация психолога онлайн и очно. Работаю с тревогой, травмами, самооценкой и отношениями. Интегративный подход — метод подбирается под вас. Запишитесь на первую консультацию.';
+  'Психолог-консультант Анна Заря. Работаю с тревогой, травмами, самооценкой, отношениями и раскрытием творческого потенциала. Интегративный подход — метод подбирается под вас. Онлайн и очно в Санкт-Петербурге.';
+
+const canonical = canonicalFromAstro(Astro.site, Astro.url);
+const jsonLd = homeJsonLd({ canonical, title, description });
 ---
 
-<BaseLayout title={title} description={description}>
-  <HeroSection />
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
 
-  <section class="section section--alt" aria-labelledby="help-heading">
-    <div class="container container--narrow">
-      <h2 id="help-heading">Кому я помогаю</h2>
-      <p>Если вы узнаёте себя хотя бы в одном из этих описаний — я могу помочь.</p>
-      <div class="card-grid card-grid--2">
-        <article class="card">
-          <h3>Тревога не отпускает</h3>
-          <p>
-            Вы постоянно на взводе, ждёте плохого, тело напряжено. Панические атаки, бессонница, навязчивые мысли. Вы устали так жить, но не знаете, как выйти из этого круга.
-          </p>
-        </article>
-        <article class="card">
-          <h3>Прошлое всё ещё болит</h3>
-          <p>
-            Детские травмы, сложные отношения с родителями, пережитое насилие или потеря — всё это продолжает влиять на вашу жизнь сегодня. Вы хотите отпустить, но не получается.
-          </p>
-        </article>
-        <article class="card">
-          <h3>Отношения буксуют</h3>
-          <p>
-            Одни и те же сценарии повторяются: вы притягиваете не тех людей, теряете себя в отношениях или не можете построить близость. Вам хочется по-другому, но вы не понимаете, что менять.
-          </p>
-        </article>
-        <article class="card">
-          <h3>Внутри — конфликт</h3>
-          <p>
-            Одна часть вас хочет одного, другая — противоположного. Вы разрываетесь, критикуете себя, не можете принять решение. Чувствуете, что внутри живут несколько «я», и они не в ладах.
-          </p>
-        </article>
-        <article class="card">
-          <h3>Тело говорит за вас</h3>
-          <p>
-            Головные боли, проблемы с ЖКТ, хроническая усталость — врачи не находят причин, а симптомы не проходят. Возможно, тело выражает то, что вы не можете сказать словами.
-          </p>
-        </article>
-        <article class="card">
-          <h3>Хочется разобраться в себе</h3>
-          <p>
-            Нет конкретной «проблемы», но есть ощущение, что вы живёте не свою жизнь. Хочется понять себя глубже, найти свой путь, перестать подстраиваться.
-          </p>
-        </article>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__bg-blob hero__bg-blob--1" aria-hidden="true"></div>
+
+    <div class="container hero__inner">
+      <div class="hero__text">
+        <h1 class="hero__title">Помогаю пройти через<br/>непростые этапы жизни<br/>и <em>найти путь к себе</em></h1>
+        <p class="hero__lead">
+          Буду рада познакомиться на консультации — онлайн и очно в {siteConfig.city}.
+        </p>
+        <p class="hero__lead" style="margin-top: -0.5rem;">Если вы здесь — первый шаг уже сделан.</p>
+        <div class="hero__actions">
+          <a href={`${base}/contacts`} class="btn final-cta__btn">Сделать ещё один шаг</a>
+          <a href={`${base}/process`} class="btn btn--outline">Как это работает</a>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="approach-heading">
-    <div class="container container--narrow">
-      <h2 id="approach-heading">Мой подход</h2>
-      <h3>Терапия, которая подстраивается под вас — а не наоборот</h3>
-      <p>
-        Я работаю в интегративном подходе. Это значит, что я не ограничиваюсь одним методом, а подбираю инструменты под вашу конкретную ситуацию, задачу и особенности.
-      </p>
-      <p>
-        У каждого человека — свой внутренний язык. Кому-то ближе работа через тело и образы, кому-то — через разговор и осознание, кому-то нужно сначала мягко прикоснуться к тому, что скрыто глубоко внутри. Я владею разными методами и выбираю тот, который даст результат именно вам.
-      </p>
-      <p>
-        <strong>Вам не нужно заранее разбираться в терапевтических подходах.</strong> На первой встрече мы вместе определим, что подойдёт — и я объясню, что мы делаем и зачем. Никакой магии — только понятная, бережная работа.
-      </p>
-
-      <h3>Что это значит на практике</h3>
-      <ul>
-        <li>
-          <strong>Гибкость.</strong> Если один путь не даёт результата — мы не буксуем, а меняем стратегию. У меня в арсенале несколько научно обоснованных методов, и я комбинирую их под вашу задачу.
-        </li>
-        <li>
-          <strong>Глубина.</strong> Мы работаем не только с симптомами, но и с тем, что их вызывает. Иногда корни проблемы лежат глубже, чем кажется — и интегративный подход позволяет добраться до них бережно и безопасно.
-        </li>
-        <li>
-          <strong>Индивидуальность.</strong> Нет двух одинаковых людей — и нет двух одинаковых терапий. Я выстраиваю процесс вокруг вас, ваших целей и вашего темпа.
-        </li>
-      </ul>
-      <p>Какой путь подойдёт вам — определим вместе на первой встрече.</p>
-    </div>
-  </section>
-
-  <section class="section section--alt" aria-labelledby="how-heading">
-    <div class="container container--narrow">
-      <h2 id="how-heading">Как я работаю</h2>
-      <ol class="steps">
-        <li>
-          <strong>Знакомство</strong> — на первой встрече мы обсуждаем ваш запрос, и я объясняю, какой подход подойдёт именно вам. Это не обязательство — просто возможность понять, комфортно ли нам работать вместе.
-        </li>
-        <li>
-          <strong>Регулярные сессии</strong> — встречаемся 1 раз в неделю по 60 минут. Онлайн или в кабинете. Каждая сессия — это шаг к вашей цели.
-        </li>
-        <li>
-          <strong>Результат</strong> — вы замечаете изменения в самочувствии, отношениях, принятии решений. Мы закрепляем результат и завершаем работу, когда вы готовы.
-        </li>
-      </ol>
-      <p>
-        <a href={`${base}process`}>Подробнее о процессе терапии →</a>
-      </p>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="about-short-heading">
-    <div class="container container--narrow">
-      <h2 id="about-short-heading">Обо мне — коротко</h2>
-      <p>
-        Я — {siteConfig.shortName}, психолог-консультант. Работаю в интегративном подходе — подбираю метод под человека и ситуацию. {siteConfig.stats.years}+ лет помогаю людям находить опору внутри себя.
-      </p>
-      <p>
-        Прохожу регулярную супервизию и продолжаю собственную терапию — для меня это часть профессиональной этики и честности перед клиентами.
-      </p>
-      <p>
-        <a href={`${base}about`}>Узнать больше обо мне →</a>
-      </p>
-    </div>
-  </section>
-
-  <section class="section section--alt" aria-labelledby="stats-heading">
-    <div class="container container--narrow">
-      <h2 id="stats-heading">Цифры</h2>
-      <div class="stats">
-        <div>
-          <div class="stat__value">{siteConfig.stats.years}+</div>
-          <div class="stat__label">лет практики</div>
-        </div>
-        <div>
-          <div class="stat__value">{siteConfig.stats.clients}+</div>
-          <div class="stat__label">клиентов прошли терапию</div>
-        </div>
-        <div>
-          <div class="stat__value">{siteConfig.stats.hours}+</div>
-          <div class="stat__label">часов обучения и супервизий</div>
-        </div>
-        <div>
-          <div class="stat__value stat__value--small">Под вас</div>
-          <div class="stat__label">Интегративный подход — метод подбирается индивидуально</div>
+      <div class="hero__visual">
+        <div class="hero__photo-wrap">
+          <div class="hero__photo-placeholder">
+            <span class="hero__photo-note">Профессиональный портрет</span>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section final-cta" aria-labelledby="cta-heading">
-    <div class="container container--narrow">
-      <h2 id="cta-heading">Запишитесь на первую консультацию</h2>
-      <p>Первый шаг — самый сложный. Но вы уже здесь.</p>
-      <p>Напишите мне — и мы вместе разберёмся, чем я могу помочь.</p>
-      <CTA />
-      <p class="contact-line">
-        📱 WhatsApp: <a href={siteConfig.whatsappUrl}>{siteConfig.whatsappDisplay}</a>
-      </p>
-      <p class="contact-line">
-        💬 Telegram: <a href={siteConfig.telegramUrl}>{siteConfig.telegramDisplay}</a>
-      </p>
+  <!-- Мой путь -->
+  <section class="about-dark section--warm section" aria-labelledby="story-heading">
+    <div class="container">
+      <div class="about-dark__inner">
+        <div class="about-dark__text">
+          <h2 id="story-heading">Мой путь в профессию</h2>
+          <p>
+            Интерес к психологии появился задолго до того, как я осознала его как профессиональный. Решение посвятить себя психотерапии созрело в момент собственного кризиса — когда привычная жизнь утратила смысл.
+          </p>
+          <p>
+            Именно тогда я начала учиться. В процессе познакомилась с разными направлениями — особенно глубоко с современными, научно доказанными подходами — и выбрала те, которые кажутся мне наиболее эффективными и близкими по духу.
+          </p>
+          <p>
+            Я глубоко убеждена, что важный инструмент терапевта — это он сам. Поэтому продолжаю личную терапию, а также регулярно прохожу супервизии и интервизии. Это не формальность: мне важно помогать и быть рядом с вами по-настоящему, а не по инструкции.
+          </p>
+          <div class="about-dark__stats">
+            <div class="dstat">
+              <p class="dstat__num" data-count={siteConfig.stats.years}>0</p>
+              <p class="dstat__label">лет практики</p>
+            </div>
+            <div class="dstat">
+              <p class="dstat__num" data-count={siteConfig.stats.clients}>0</p>
+              <p class="dstat__label">клиентов</p>
+            </div>
+            <div class="dstat">
+              <p class="dstat__num" data-count="400">0</p>
+              <p class="dstat__label">часов личной терапии</p>
+            </div>
+            <div class="dstat">
+              <p class="dstat__num" data-count="3000">0</p>
+              <p class="dstat__label">часов обучения</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
+
+  <!-- Образование -->
+  <section class="edu section" aria-labelledby="edu-heading">
+    <div class="container">
+      <h2 id="edu-heading">Квалификация <wbr/>и обучение</h2>
+      <div class="edu__grid">
+        <div class="edu-item">
+          <div class="edu-item__dot" aria-hidden="true"></div>
+          <div>
+            <p class="edu-item__cat">Базовое образование</p>
+            <p class="edu-item__title">Клиническая психология</p>
+            <p class="edu-item__sub">Новосибирский государственный университет, Факультет медицины и психологии В. Зельмана — бакалавриат 37.03.01</p>
+          </div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-item__dot" aria-hidden="true"></div>
+          <div>
+            <p class="edu-item__cat">Специализация</p>
+            <p class="edu-item__title">Регрессивная гипнотерапия</p>
+            <p class="edu-item__sub">Обучение у В. Макулова по методу Владимира Макулова</p>
+          </div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-item__dot" aria-hidden="true"></div>
+          <div>
+            <p class="edu-item__cat">Специализация</p>
+            <p class="edu-item__title">Когнитивный гипноанализ</p>
+            <p class="edu-item__sub">Институт психотерапии и экспериментальной психологии им. К. И. Платонова, Геннадий Иванов</p>
+          </div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-item__dot" aria-hidden="true"></div>
+          <div>
+            <p class="edu-item__cat">Специализация</p>
+            <p class="edu-item__title">Терапия внутренних семейных систем (IFS)</p>
+            <p class="edu-item__sub">Психодемия — 80 академических часов: теория, практика под супервизией сертифицированных IFS-терапевтов</p>
+          </div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-item__dot" aria-hidden="true"></div>
+          <div>
+            <p class="edu-item__cat">Специализация</p>
+            <p class="edu-item__title">Арт-терапия</p>
+            <p class="edu-item__sub">Законченный курс специализации по арт-терапии — диплом о профессиональной переподготовке</p>
+          </div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-item__dot edu-item__dot--accent" aria-hidden="true"></div>
+          <div>
+            <p class="edu-item__cat">Непрерывная практика</p>
+            <p class="edu-item__title">Супервизия, интервизия, личная терапия</p>
+            <p class="edu-item__sub">На протяжении {siteConfig.stats.years}+ лет — более {siteConfig.stats.hours} часов образования, практики и профессионального сопровождения</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Подход -->
+  <section class="approach section" aria-labelledby="approach-heading">
+    <div class="container">
+      <div class="approach__top">
+        <div class="approach__intro">
+          <span class="eyebrow">Подход</span>
+          <h2 id="approach-heading">Терапия, которая<br/><em>подстраивается под вас</em></h2>
+        </div>
+        <p class="approach__lead">
+          Я работаю в интегративном подходе — не ограничиваюсь одним методом, а подбираю инструменты под вашу конкретную ситуацию, задачу и особенности.
+        </p>
+      </div>
+      <div class="methods-row">
+        <span class="method-pill">IFS-терапия</span>
+        <span class="method-pill">Гипнотерапия</span>
+        <span class="method-pill">Психодинамический подход</span>
+        <span class="method-pill">Работа с телом</span>
+        <span class="method-pill">Арт-терапия</span>
+        <span class="method-pill">EMDR</span>
+      </div>
+      <div class="approach__cards">
+        <div class="acard">
+          <div class="acard__num" aria-hidden="true">01</div>
+          <h3>Гибкость</h3>
+          <p>Если один путь не даёт результата — меняем стратегию. В арсенале несколько научно обоснованных методов, которые я комбинирую под вашу задачу.</p>
+        </div>
+        <div class="acard">
+          <div class="acard__num" aria-hidden="true">02</div>
+          <h3>Глубина</h3>
+          <p>Работаем не только с симптомами, но и с тем, что их вызывает. Интегративный подход позволяет добраться до корней бережно и безопасно.</p>
+        </div>
+        <div class="acard">
+          <div class="acard__num" aria-hidden="true">03</div>
+          <h3>Индивидуальность</h3>
+          <p>Нет двух одинаковых людей — и нет двух одинаковых терапий. Я выстраиваю процесс вокруг вас, ваших целей и вашего темпа.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Принципы — синяя секция -->
+  <section class="principles section section--blue" aria-labelledby="principles-heading">
+    <div class="container">
+      <span class="eyebrow" style="color: rgba(255,255,255,0.6)">Принципы работы</span>
+      <h2 id="principles-heading" style="margin-top: 0.25rem">Как выглядит<br/>наше взаимодействие</h2>
+      <div class="principles__grid">
+        <div class="pcard">
+          <div class="pcard__icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Безопасность</h3>
+          <p>Пространство, где можно быть настоящим — со всеми чувствами, сомнениями и уязвимостями.</p>
+        </div>
+        <div class="pcard">
+          <div class="pcard__icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <h3>Живой контакт</h3>
+          <p>Я буду рядом не как функция, а как живой человек, который слышит вас.</p>
+        </div>
+        <div class="pcard">
+          <div class="pcard__icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+          </div>
+          <h3>Без осуждения</h3>
+          <p>Сюда можно приносить то, что обычно прячут. Моя задача — не оценивать, а понимать.</p>
+        </div>
+        <div class="pcard">
+          <div class="pcard__icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+          </div>
+          <h3>Ясность</h3>
+          <p>Я объясняю, что мы делаем и зачем. Вы всегда понимаете метод и почему он подходит вашей ситуации.</p>
+        </div>
+        <div class="pcard">
+          <div class="pcard__icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          </div>
+          <h3>Ориентация на результат</h3>
+          <p>Ставим конкретную цель и двигаемся к ней. Периодически сверяемся: туда ли мы идём.</p>
+        </div>
+        <div class="pcard">
+          <div class="pcard__icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <h3>Конфиденциальность</h3>
+          <p>Всё, что происходит в терапии, остаётся в терапии. Абсолютно.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA финальный -->
+  <section class="final-cta section" aria-labelledby="cta-heading">
+    <div class="container">
+      <div class="final-cta__inner">
+        <h2 id="cta-heading">Я буду рядом<br/><em>на этом пути</em></h2>
+        <p>Напишите мне в любое время. Не нужно знать, «правильный» ли у вас запрос. Мы вместе разберёмся, что происходит.</p>
+        <div class="final-cta__btns">
+          <a href={`${base}/contacts`} class="btn final-cta__btn">Сделать ещё один шаг</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </BaseLayout>
 
 <style>
-  .steps {
-    padding-left: 1.25rem;
+  /* ── Hero ─────────────────────────────────────── */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: var(--space-xl) 0 calc(var(--space-xl) * 1.1);
   }
 
-  .steps li {
-    margin-bottom: var(--space-sm);
+  .hero__bg-blob {
+    position: absolute;
+    border-radius: 60% 40% 55% 45% / 45% 55% 40% 60%;
+    pointer-events: none;
+    z-index: 0;
   }
 
-  .final-cta {
+  .hero__bg-blob--1 {
+    width: 500px;
+    height: 500px;
+    background: rgba(92, 61, 122, 0.08);
+    top: -120px;
+    right: -80px;
+  }
+
+  .hero__bg-blob--2 {
+    width: 300px;
+    height: 300px;
+    background: rgba(200, 128, 90, 0.07);
+    bottom: -60px;
+    left: -60px;
+  }
+
+  .hero__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: var(--space-lg);
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .hero__inner {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .hero__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero__title {
+    margin-top: 0;
+    margin-bottom: var(--space-md);
+    font-size: clamp(1.9rem, 4.5vw, 3rem);
+  }
+
+  .hero__title em {
+    font-style: italic;
+    color: var(--color-accent);
+  }
+
+  .hero__lead {
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+    max-width: 480px;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  /* Photo area */
+  .hero__visual {
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero__photo-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .hero__photo-placeholder {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(145deg, var(--color-bg-alt), var(--color-border));
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: var(--space-md);
+    overflow: hidden;
+  }
+
+  .hero__photo-note {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
     text-align: center;
   }
 
-  .contact-line {
-    margin: 0.25rem 0;
-    font-size: 0.95rem;
+  .hero__signature {
+    margin-bottom: var(--space-md);
+    padding-left: 1rem;
+    border-left: 2px solid var(--color-accent);
   }
 
-  .stat__value--small {
-    font-size: 1.25rem;
+  .hero__signature-quote {
+    font-size: 0.975rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+
+  .hero__badge {
+    position: absolute;
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 0.6rem 1rem;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.2;
+    border: 1px solid var(--color-border);
+  }
+
+  .hero__badge--years {
+    bottom: 24px;
+    left: -20px;
+  }
+
+  .hero__badge--clients {
+    top: 24px;
+    right: -20px;
+  }
+
+  .badge-num {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--color-accent);
+  }
+
+  .badge-label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  /* ── About warm ───────────────────────────────── */
+  .section--warm {
+    background: var(--color-accent-light);
+  }
+
+  .about-dark.section {
+    padding-top: calc(var(--space-xl) / 2);
+  }
+
+  .about-dark {
+    color: var(--color-text);
+  }
+
+  .about-dark p {
+    color: var(--color-text-muted);
+  }
+
+  .about-dark__inner {
+    display: block;
+  }
+
+  .dark-quote {
+    background: rgba(92, 61, 122, 0.07);
+    border: 1px solid rgba(92, 61, 122, 0.18);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    font-family: var(--font-serif);
+    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+    font-style: italic;
+    color: var(--color-text);
+    line-height: 1.4;
+    margin: 0 0 var(--space-lg);
+  }
+
+  .about-dark__stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-sm);
+    margin-top: var(--space-lg);
+  }
+
+  @media (min-width: 640px) {
+    .about-dark__stats {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .dstat {
+    background: var(--color-surface-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: var(--space-md);
+    text-align: center;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .dstat.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .dstat:nth-child(2) { transition-delay: 0.1s; }
+  .dstat:nth-child(3) { transition-delay: 0.2s; }
+  .dstat:nth-child(4) { transition-delay: 0.3s; }
+
+  .dstat__num {
+    font-family: var(--font-serif);
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 700;
+    color: var(--color-accent);
+    margin: 0 0 0.3rem;
+    line-height: 1;
+  }
+
+  .dstat__num::after {
+    content: '+';
+    font-size: 0.65em;
+    vertical-align: super;
+    opacity: 0.7;
+  }
+
+  .dstat__label {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin: 0;
     line-height: 1.3;
   }
+
+  /* ── Approach ─────────────────────────────────── */
+  .approach.section {
+    background: var(--color-bg-alt);
+  }
+
+  .approach .method-pill {
+    background: var(--color-bg);
+  }
+
+  .approach__top {
+    display: grid;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+  }
+
+  @media (min-width: 768px) {
+    .approach__top {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+  }
+
+  .approach__intro h2 {
+    margin-top: 0.25rem;
+    margin-bottom: 0;
+  }
+
+  .approach__intro h2 em {
+    color: var(--color-accent);
+    font-style: italic;
+  }
+
+  .approach__lead {
+    font-size: 1.05rem;
+    color: var(--color-text-muted);
+    padding-top: 3rem;
+    text-align: right;
+    font-style: italic;
+  }
+
+  @media (max-width: 767px) {
+    .approach__lead {
+      padding-top: 0;
+    }
+  }
+
+  .methods-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: var(--space-lg);
+    width: 100%;
+  }
+
+  .method-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem 1rem;
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    font-size: 0.875rem;
+    color: var(--color-text);
+    font-weight: 400;
+    flex: 1 1 auto;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .approach__cards {
+    display: grid;
+    gap: var(--space-sm);
+  }
+
+  @media (min-width: 640px) {
+    .approach__cards {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .approach__cards {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .acard {
+    background: var(--color-surface-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+
+  .approach .acard {
+    border-top: none;
+  }
+
+  .acard:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  .acard__num {
+    font-family: var(--font-serif);
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--color-border);
+    line-height: 1;
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+  }
+
+  .acard h3 {
+    margin-top: 0;
+    color: var(--color-text);
+    position: relative;
+    z-index: 1;
+  }
+
+  .acard p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Principles (blue) ────────────────────────── */
+  .principles h2 em {
+    font-style: italic;
+  }
+
+  .principles__grid {
+    display: grid;
+    gap: var(--space-sm);
+    margin-top: var(--space-lg);
+  }
+
+  @media (min-width: 640px) {
+    .principles__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .principles__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .pcard {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    transition: background 0.2s;
+  }
+
+  .pcard:hover {
+    background: rgba(255,255,255,0.15);
+  }
+
+  .pcard__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-sm);
+    color: #fff;
+  }
+
+  .pcard h3 {
+    color: #fff;
+    margin-top: 0;
+    font-size: 1rem;
+    font-family: var(--font-sans);
+  }
+
+  .pcard p {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  /* ── Education ────────────────────────────────── */
+  .edu h2 em {
+    color: var(--color-accent);
+    font-style: italic;
+  }
+
+  .edu__grid {
+    display: grid;
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
+  }
+
+  @media (min-width: 768px) {
+    .edu__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .edu-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .edu-item__dot {
+    flex-shrink: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-border);
+    margin-top: 0.4rem;
+  }
+
+  .edu-item__dot--accent {
+    background: var(--color-accent);
+  }
+
+  .edu-item__cat {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin: 0 0 0.2rem;
+  }
+
+  .edu-item__title {
+    font-weight: 600;
+    font-size: 1rem;
+    margin: 0 0 0.25rem;
+    line-height: 1.3;
+  }
+
+  .edu-item__sub {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.45;
+  }
+
+  /* ── Final CTA ────────────────────────────────── */
+  .final-cta.section {
+    padding-top: var(--space-xl);
+    padding-bottom: var(--space-lg);
+  }
+
+  .final-cta {
+    background: var(--color-bg-alt);
+  }
+
+  .final-cta__inner {
+    max-width: 680px;
+    margin-inline: auto;
+    text-align: center;
+    padding: 0 0 var(--space-md);
+  }
+
+  .final-cta__inner h2 {
+    font-size: clamp(1.8rem, 4vw, 2.75rem);
+    margin-top: 0;
+  }
+
+  .final-cta__inner h2 em {
+    color: var(--color-accent);
+    font-style: italic;
+  }
+
+  .final-cta__inner p {
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
+    max-width: 480px;
+    margin: 0 auto var(--space-md);
+  }
+
+  .final-cta__btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+  .final-cta__btns .btn {
+    flex: 0 1 auto;
+    text-align: center;
+  }
+
+  .final-cta__btns .final-cta__btn {
+    background: var(--color-accent);
+    border: 2px solid var(--color-accent);
+    color: var(--color-surface-white);
+  }
+
+  .final-cta__btns .final-cta__btn:hover {
+    background: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
+    color: var(--color-surface-white);
+    transform: translateY(-1px);
+  }
+
+  .hero__actions .final-cta__btn {
+    background: rgba(74, 48, 96, 0.12);
+    border: 1px solid rgba(74, 48, 96, 0.3);
+    color: var(--color-accent);
+  }
+
+  .hero__actions .final-cta__btn:hover {
+    background: rgba(74, 48, 96, 0.2);
+    border-color: rgba(74, 48, 96, 0.45);
+    color: var(--color-accent-hover);
+    transform: translateY(-1px);
+  }
+
+  .final-cta__btns .final-cta__btn:focus-visible,
+  .hero__actions .final-cta__btn:focus-visible {
+    outline-color: var(--color-accent);
+  }
 </style>
+
+<script>
+  function animateCount(el: HTMLElement, target: number, duration = 1200) {
+    const start = performance.now();
+    const update = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = String(Math.round(eased * target));
+      if (progress < 1) requestAnimationFrame(update);
+    };
+    requestAnimationFrame(update);
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const stat = entry.target as HTMLElement;
+      stat.classList.add('visible');
+      const numEl = stat.querySelector<HTMLElement>('.dstat__num');
+      if (numEl) {
+        const target = parseInt(numEl.dataset.count ?? '0', 10);
+        animateCount(numEl, target);
+      }
+      observer.unobserve(stat);
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll<HTMLElement>('.dstat').forEach((el) => observer.observe(el));
+</script>

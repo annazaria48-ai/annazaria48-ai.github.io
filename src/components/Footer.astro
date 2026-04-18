@@ -1,71 +1,141 @@
 ---
 import { siteConfig } from '../site';
 
-const base = import.meta.env.BASE_URL;
 const year = new Date().getFullYear();
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<footer class="site-footer section section--alt">
-  <div class="container">
-    <div class="site-footer__grid">
-      <div>
-        <p class="site-footer__name">{siteConfig.psychologistName}</p>
-        <p class="site-footer__muted">Психолог-консультант · {siteConfig.city}</p>
+<footer class="site-footer">
+  <div class="footer-top">
+    <div class="container footer-top__inner">
+      <div class="footer-brand">
+        <p class="footer-name">{siteConfig.psychologistName}</p>
+        <p class="footer-tagline">Психолог-консультант · {siteConfig.city}</p>
       </div>
-      <div class="site-footer__contacts">
-        <p>
-          <a href={siteConfig.whatsappUrl}>WhatsApp</a>
-          ·
-          <a href={siteConfig.telegramUrl}>Telegram</a>
-        </p>
-        <p>
-          <a href={`tel:${siteConfig.phoneTel}`}>{siteConfig.phoneDisplay}</a>
-        </p>
+      <div class="footer-links">
+        <nav aria-label="Навигация в подвале">
+          <ul>
+            <li><a href={`${base}/`}>Обо мне</a></li>
+            <li><a href={`${base}/requests`}>С чем работаю</a></li>
+            <li><a href={`${base}/process`}>Как проходит</a></li>
+            <li><a href={`${base}/pricing`}>Стоимость</a></li>
+            <li><a href={`${base}/blog`}>Блог</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-contact">
+        <p class="footer-contact__label">Связаться</p>
+        <a href={`${base}/contacts`} class="footer-contact__link">Контакты и запись</a>
       </div>
     </div>
-    <p class="site-footer__copy">&copy; {year} {siteConfig.psychologistName}</p>
+  </div>
+  <div class="footer-bottom">
+    <div class="container footer-bottom__inner">
+      <p>&copy; {year} {siteConfig.psychologistName}</p>
+      <p>Онлайн и очно · {siteConfig.city}</p>
+    </div>
   </div>
 </footer>
 
 <style>
-  .site-footer__grid {
-    display: grid;
-    gap: var(--space-md);
-    margin-bottom: var(--space-md);
+  .site-footer {
+    background: var(--color-bg-dark);
+    color: rgba(250, 249, 246, 0.7);
+    margin-top: 0;
   }
 
-  @media (min-width: 640px) {
-    .site-footer__grid {
-      grid-template-columns: 1fr 1fr;
+  .footer-top {
+    padding: var(--space-xl) 0 var(--space-lg);
+  }
+
+  .footer-top__inner {
+    display: grid;
+    gap: var(--space-lg);
+  }
+
+  @media (min-width: 768px) {
+    .footer-top__inner {
+      grid-template-columns: 1.5fr 1fr 1fr;
       align-items: start;
     }
   }
 
-  .site-footer__name {
+  .footer-name {
     font-family: var(--font-serif);
+    font-size: 1.4rem;
     font-weight: 600;
-    margin: 0 0 0.25rem;
+    color: #faf9f6;
+    margin: 0 0 0.3rem;
+    line-height: 1.2;
   }
 
-  .site-footer__muted {
+  .footer-tagline {
+    font-size: 0.875rem;
     margin: 0;
-    color: var(--color-text-muted);
-    font-size: 0.95rem;
+    color: rgba(250, 249, 246, 0.5);
   }
 
-  .site-footer__contacts {
-    font-size: 0.95rem;
-  }
-
-  .site-footer__contacts p {
-    margin: 0 0 0.35rem;
-  }
-
-  .site-footer__copy {
+  .footer-links ul {
+    list-style: none;
     margin: 0;
-    padding-top: var(--space-md);
-    border-top: 1px solid var(--color-border);
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer-links a {
+    color: rgba(250, 249, 246, 0.6);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover {
+    color: #faf9f6;
+  }
+
+  .footer-contact__label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(250, 249, 246, 0.4);
+    margin: 0 0 0.75rem;
+  }
+
+  .footer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer-contact__link {
+    color: rgba(250, 249, 246, 0.6);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+
+  .footer-contact__link:hover {
+    color: var(--color-accent);
+  }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(250, 249, 246, 0.08);
+    padding: var(--space-md) 0;
+  }
+
+  .footer-bottom__inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-xs);
+  }
+
+  .footer-bottom p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: rgba(250, 249, 246, 0.3);
   }
 </style>

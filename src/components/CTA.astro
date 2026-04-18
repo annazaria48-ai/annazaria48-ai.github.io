@@ -1,31 +1,22 @@
 ---
-import { siteConfig } from '../site';
-
 interface Props {
   label?: string;
   class?: string;
+  variant?: 'default' | 'dark' | 'outline';
 }
 
-const { label = 'Записаться на консультацию', class: className = '' } = Astro.props;
+const { label = 'Записаться на пробную консультацию', class: className = '', variant = 'default' } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const btnClass = variant === 'dark' ? 'btn btn--dark' : variant === 'outline' ? 'btn btn--outline' : 'btn';
 ---
 
 <div class:list={['cta-block', className]}>
-  <a class="btn" href={siteConfig.telegramUrl}>{label}</a>
-  <p class="cta-block__alt">
-    или напишите в
-    <a href={siteConfig.whatsappUrl}>WhatsApp</a>
-  </p>
+  <a class={btnClass} href={`${base}/contacts`}>{label}</a>
 </div>
 
 <style>
   .cta-block {
     margin: var(--space-md) 0;
-    text-align: center;
-  }
-
-  .cta-block__alt {
-    margin: var(--space-sm) 0 0;
-    font-size: 0.95rem;
-    color: var(--color-text-muted);
   }
 </style>

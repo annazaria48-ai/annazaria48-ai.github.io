@@ -1,0 +1,391 @@
+---
+import { siteConfig } from '../site';
+
+/** Публичный URL встраивания (Cal.com, Calendly и т.п.). Имеет приоритет над siteConfig. */
+const embedFromEnv = import.meta.env.PUBLIC_BOOKING_EMBED_URL as string | undefined;
+const bookingEmbedUrl = (embedFromEnv?.trim() || siteConfig.bookingEmbedUrl?.trim() || '') as string;
+const useEmbed = Boolean(bookingEmbedUrl);
+
+interface Props {
+  /** Заголовок блока (для a11y и структуры страницы) */
+  heading?: string;
+  /** Текст под заголовком; если не передан — блок не показывается */
+  lead?: string;
+  /** Меньше верхнего отступа, когда блок идёт сразу после page-hero */
+  compactTop?: boolean;
+}
+
+const {
+  heading = 'Оставить контакт',
+  lead,
+  compactTop = false,
+} = Astro.props;
+---
+
+<section
+  class:list={['booking-section', 'section', 'section--alt', compactTop && 'booking-section--compact-top']}
+  aria-labelledby="contact-request-heading"
+>
+  <div class="container">
+    <h2 id="contact-request-heading">{heading}</h2>
+    {lead ? <p class="contact-request__lead">{lead}</p> : null}
+
+    {useEmbed ? (
+      <div class="booking-embed">
+        <iframe
+          title="Онлайн-запись"
+          src={bookingEmbedUrl}
+          class="booking-embed__frame"
+          loading="lazy"
+        />
+      </div>
+    ) : (
+      <div
+        class="contact-request"
+        id="contact-request-app"
+        data-email={siteConfig.email}
+        data-name={siteConfig.psychologistName}
+      >
+        <form class="contact-request__form" id="contact-request-form" novalidate>
+          <div class="contact-request__layout">
+            <div class="contact-request__fields">
+              <label class="contact-request__label">
+                Как мне вас называть
+                <input
+                  type="text"
+                  name="clientName"
+                  id="contact-request-name"
+                  required
+                  autocomplete="name"
+                  class="contact-request__input"
+                />
+              </label>
+
+              <label class="contact-request__label">
+                Телефон
+                <div class="contact-request__phone-field">
+                  <span class="contact-request__phone-prefix">+7</span>
+                  <input
+                    type="tel"
+                    name="phoneLocal"
+                    id="contact-request-phone"
+                    required
+                    class="contact-request__input contact-request__input--phone-rest"
+                    inputmode="numeric"
+                    autocomplete="tel-national"
+                    aria-label="Цифры номера после +7"
+                  />
+                </div>
+              </label>
+
+              <label class="contact-request__label" for="contact-request-preference">
+                Предпочтительный способ связи
+                <select
+                  name="contactPreference"
+                  id="contact-request-preference"
+                  required
+                  class="contact-request__input contact-request__select"
+                >
+                  <option value="" disabled selected hidden>Выберите вариант</option>
+                  <option value="telegram">Telegram</option>
+                  <option value="whatsapp">WhatsApp</option>
+                  <option value="max">MAX</option>
+                  <option value="call">Звонок на телефон</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="contact-request__comment">
+              <label class="contact-request__label contact-request__label--stretch">
+                <span class="contact-request__label-heading">
+                  Комментарий
+                  <span class="contact-request__optional">(по желанию)</span>
+                </span>
+                <textarea
+                  name="message"
+                  id="contact-request-message"
+                  rows="4"
+                  class="contact-request__input contact-request__textarea"
+                ></textarea>
+              </label>
+            </div>
+          </div>
+
+          <div class="contact-request__actions">
+            <button type="submit" class="btn contact-request__submit">Отправить</button>
+            <p class="contact-request__note" id="contact-request-note"></p>
+          </div>
+        </form>
+      </div>
+    )}
+  </div>
+</section>
+
+{!useEmbed && (
+  <script>
+    (function () {
+      const root = document.getElementById('contact-request-app');
+      if (!root) return;
+
+      const emailTo = root.dataset.email || '';
+      const psychName = root.dataset.name || '';
+      const form = document.getElementById('contact-request-form');
+      const formNote = document.getElementById('contact-request-note');
+      const phoneLocalInput = document.getElementById('contact-request-phone');
+
+      function normalizePhoneLocalDigits(raw) {
+        let d = String(raw || '').replace(/\D/g, '');
+        if (d.startsWith('7')) d = d.slice(1);
+        if (d.startsWith('8')) d = d.slice(1);
+        return d.slice(0, 10);
+      }
+
+      phoneLocalInput?.addEventListener('input', () => {
+        if (!phoneLocalInput) return;
+        const normalized = normalizePhoneLocalDigits(phoneLocalInput.value);
+        if (phoneLocalInput.value !== normalized) phoneLocalInput.value = normalized;
+      });
+
+      form?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const fd = new FormData(form);
+        const name = String(fd.get('clientName') || '').trim();
+        const phoneDigits = normalizePhoneLocalDigits(fd.get('phoneLocal'));
+        const phone = phoneDigits.length ? '+7' + phoneDigits : '';
+        const pref = String(fd.get('contactPreference') || '').trim();
+        const message = String(fd.get('message') || '').trim();
+        if (!name || !phone || !pref) return;
+
+        const prefSelect = form.querySelector('#contact-request-preference');
+        const prefLabel =
+          prefSelect && prefSelect.selectedOptions[0]
+            ? prefSelect.selectedOptions[0].text.trim()
+            : pref;
+
+        const subject = encodeURIComponent('Заявка: прошу связаться со мной');
+        const bodyLines = [
+          `Здравствуйте, ${psychName}!`,
+          '',
+          'Прошу связаться со мной для согласования времени консультации.',
+          '',
+          `Имя / как обращаться: ${name}`,
+          `Телефон: ${phone}`,
+          `Предпочтительный способ связи: ${prefLabel}`,
+        ];
+        if (message) {
+          bodyLines.push('', 'Комментарий:', message);
+        }
+        const body = encodeURIComponent(bodyLines.join('\n'));
+        const mail = `mailto:${encodeURIComponent(emailTo)}?subject=${subject}&body=${body}`;
+        window.location.href = mail;
+        if (formNote) {
+          formNote.textContent =
+            'Если почтовый клиент не открылся, скопируйте текст заявки и отправьте его на ' + emailTo;
+        }
+      });
+    })();
+  </script>
+)}
+
+<style>
+  .booking-section {
+    padding-bottom: var(--space-lg);
+  }
+
+  .booking-section--compact-top {
+    padding-top: var(--space-md);
+  }
+
+  .booking-section h2 {
+    margin-top: 0;
+    font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+  }
+
+  .contact-request__lead {
+    margin: 0 0 var(--space-md);
+    max-width: 40rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--color-text-muted);
+  }
+
+  .booking-embed {
+    margin-top: var(--space-sm);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface-white);
+    box-shadow: var(--shadow);
+  }
+
+  .booking-embed__frame {
+    display: block;
+    width: 100%;
+    min-height: min(720px, 85vh);
+    border: 0;
+  }
+
+  .contact-request {
+    margin-top: var(--space-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contact-request__form {
+    box-sizing: border-box;
+    width: min(100%, 80vw);
+    margin-inline: auto;
+    background: var(--color-surface-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    box-shadow: var(--shadow);
+  }
+
+  .contact-request__layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .contact-request__fields,
+  .contact-request__comment {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    min-width: 0;
+  }
+
+  .contact-request__label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  @media (min-width: 900px) {
+    .contact-request__layout {
+      flex-direction: row;
+      align-items: stretch;
+      gap: var(--space-lg);
+    }
+
+    .contact-request__fields {
+      flex: 1;
+      gap: var(--space-md);
+    }
+
+    .contact-request__comment {
+      flex: 1.1;
+    }
+
+    .contact-request__label--stretch {
+      flex: 1;
+      min-height: 0;
+    }
+
+    .contact-request__label--stretch .contact-request__textarea {
+      flex: 1;
+      min-height: 8.5rem;
+    }
+  }
+
+  .contact-request__label-heading {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem;
+  }
+
+  .contact-request__optional {
+    font-weight: 400;
+    color: var(--color-text-muted);
+  }
+
+  .contact-request__phone-field {
+    display: flex;
+    align-items: stretch;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    overflow: hidden;
+  }
+
+  .contact-request__phone-prefix {
+    display: flex;
+    align-items: center;
+    padding: 0.65rem 0.5rem 0.65rem 0.85rem;
+    font-weight: 400;
+    font-size: inherit;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+    user-select: none;
+    background: var(--color-bg);
+  }
+
+  .contact-request__input {
+    font: inherit;
+    font-weight: 400;
+    padding: 0.65rem 0.85rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  .contact-request__input--phone-rest {
+    border: none;
+    border-radius: 0;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .contact-request__input:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+  }
+
+  .contact-request__input--phone-rest:focus {
+    outline: none;
+  }
+
+  .contact-request__phone-field:focus-within {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+  }
+
+  .contact-request__textarea {
+    resize: vertical;
+    min-height: 5.5rem;
+  }
+
+  .contact-request__select {
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .contact-request__actions {
+    margin-top: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .contact-request__submit {
+    width: 100%;
+    max-width: 20rem;
+  }
+
+  .contact-request__note {
+    margin: var(--space-sm) 0 0;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    max-width: 36rem;
+  }
+</style>

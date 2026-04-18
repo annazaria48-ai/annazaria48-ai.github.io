@@ -1,25 +1,28 @@
 ---
 import { siteConfig } from '../site';
 
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const nav = [
-  { href: `${base}`, label: 'Главная' },
-  { href: `${base}about`, label: 'Обо мне' },
-  { href: `${base}requests`, label: 'С чем я работаю' },
-  { href: `${base}process`, label: 'Как проходит терапия' },
-  { href: `${base}pricing`, label: 'Стоимость' },
-  { href: `${base}blog`, label: 'Блог' },
-  { href: `${base}contacts`, label: 'Контакты' },
+  { href: `${base}/requests`, label: 'С чем работаю' },
+  { href: `${base}/process`, label: 'Как проходит' },
+  { href: `${base}/pricing`, label: 'Стоимость' },
+  { href: `${base}/blog`, label: 'Блог' },
 ];
 ---
 
 <header class="site-header">
-  <div class="container site-header__inner">
-    <a href={base} class="site-header__brand">{siteConfig.psychologistName}</a>
+  <div class="site-header__inner">
+    <a href={`${base}/`} class="site-header__brand">
+      <span class="brand-first">{siteConfig.shortName}</span>
+      <span class="brand-last">{siteConfig.psychologistName.split(' ')[1]}</span>
+    </a>
+
     <button type="button" class="site-header__toggle" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
       <span class="visually-hidden">Меню</span>
-      <span class="site-header__burger" aria-hidden="true"></span>
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
     </button>
+
     <nav id="site-nav" class="site-nav" data-nav>
       <ul class="site-nav__list">
         {nav.map((item) => (
@@ -28,6 +31,7 @@ const nav = [
           </li>
         ))}
       </ul>
+      <a href={`${base}/contacts`} class="btn btn-header">Записаться</a>
     </nav>
   </div>
 </header>
@@ -37,8 +41,9 @@ const nav = [
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(246, 243, 238, 0.95);
-    backdrop-filter: blur(8px);
+    background: rgba(244, 244, 244, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--color-border);
   }
 
@@ -47,30 +52,49 @@ const nav = [
     align-items: center;
     justify-content: space-between;
     gap: var(--space-sm);
-    padding: var(--space-sm) 0;
+    padding: 0.9rem 1.5rem;
     max-width: var(--max-width-wide);
-    width: min(100% - 2rem, var(--max-width-wide));
     margin-inline: auto;
   }
 
+  /* Brand */
   .site-header__brand {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35em;
+    text-decoration: none;
+    line-height: 1;
+  }
+
+  .brand-first {
     font-family: var(--font-serif);
     font-weight: 600;
-    font-size: 1.05rem;
+    font-size: 1.15rem;
     color: var(--color-text);
-    text-decoration: none;
-    white-space: nowrap;
+    transition: color 0.2s;
   }
 
-  .site-header__brand:hover {
+  .brand-last {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.15rem;
+    color: var(--color-text-muted);
+    transition: color 0.2s;
+  }
+
+  .site-header__brand:hover .brand-first,
+  .site-header__brand:hover .brand-last {
     color: var(--color-accent);
-    text-decoration: none;
   }
 
+  /* Mobile toggle */
   .site-header__toggle {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 6px;
     width: 44px;
     height: 44px;
     padding: 0;
@@ -85,51 +109,47 @@ const nav = [
     }
   }
 
-  .site-header__burger {
+  .burger-line {
     display: block;
     width: 22px;
-    height: 2px;
+    height: 1.5px;
     background: var(--color-text);
-    position: relative;
+    border-radius: 2px;
+    transition: transform 0.25s, opacity 0.25s;
   }
 
-  .site-header__burger::before,
-  .site-header__burger::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    width: 22px;
-    height: 2px;
-    background: var(--color-text);
+  .site-header__toggle[aria-expanded="true"] .burger-line:nth-child(1) {
+    transform: translateY(3.75px) rotate(45deg);
   }
 
-  .site-header__burger::before {
-    top: -7px;
+  .site-header__toggle[aria-expanded="true"] .burger-line:nth-child(2) {
+    transform: translateY(-3.75px) rotate(-45deg);
   }
 
-  .site-header__burger::after {
-    top: 7px;
-  }
-
+  /* Nav */
   .site-nav {
     display: none;
   }
 
   .site-nav.is-open {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
     background: var(--color-bg);
     border-bottom: 1px solid var(--color-border);
-    padding: var(--space-md);
-    box-shadow: var(--shadow);
+    padding: var(--space-md) 1.5rem;
+    box-shadow: var(--shadow-md);
   }
 
   @media (min-width: 900px) {
     .site-nav {
-      display: block;
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
       position: static;
       padding: 0;
       border: none;
@@ -144,29 +164,39 @@ const nav = [
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--space-xs);
+    gap: 0.25rem;
   }
 
   @media (min-width: 900px) {
     .site-nav__list {
       flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      gap: var(--space-sm);
+      align-items: center;
+      gap: 0.25rem;
     }
   }
 
   .site-nav__link {
     display: block;
-    padding: 0.35rem 0;
-    color: var(--color-text);
+    padding: 0.45rem 0.65rem;
+    color: var(--color-text-muted);
     text-decoration: none;
-    font-size: 0.95rem;
+    font-size: 0.925rem;
+    font-weight: 400;
+    border-radius: var(--radius-pill);
+    transition: color 0.2s, background 0.2s;
   }
 
   .site-nav__link:hover {
-    color: var(--color-accent);
+    color: var(--color-text);
+    background: var(--color-bg-alt);
     text-decoration: none;
+  }
+
+  /* CTA in header */
+  .btn-header {
+    padding: 0.55rem 1.2rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
   }
 
   .visually-hidden {

@@ -1,93 +1,558 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import CTA from '../components/CTA.astro';
-import { siteConfig } from '../site';
+import { canonicalFromAstro, processPageJsonLd } from '../lib/seo';
 
-const title = 'Как проходит консультация психолога — от первой встречи до результата';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = 'Как проходит консультация психолога — от пробной консультации до результата';
 const description =
   'Узнайте, как проходит терапия: вводная консультация, выбор метода, регулярные сеансы, результаты. Ответы на частые вопросы.';
+
+const steps = [
+  {
+    num: '01',
+    title: 'Вы пишете или оставляете заявку',
+    text: 'Напишите мне в Telegram, WhatsApp или на почту — или оставьте короткую заявку через форму на странице контактов, и я сама свяжусь с вами удобным способом. Не нужно формулировать «правильный» запрос: достаточно пары фраз о том, что вас беспокоит. Отвечу в течение 24 часов.',
+  },
+  {
+    num: '02',
+    title: 'Пробная консультация',
+    text: '30 минут онлайн, бесплатно. Знакомимся, говорим о вашем запросе, намечаем план. Никаких обязательств — если почувствуете, что это «не ваше», ничего страшного.',
+  },
+  {
+    num: '03',
+    title: 'Регулярные сеансы',
+    text: 'Обычно 1 раз в неделю, 90 минут. Каждый сеанс выстраивается индивидуально — через разговор, тело и образы, глубинную релаксацию или творчество.',
+  },
+  {
+    num: '04',
+    title: 'Отслеживание прогресса',
+    text: 'Каждые 4–6 сеансов делаем «чек-ап»: что изменилось, двигаемся ли к цели, нужно ли скорректировать подход.',
+  },
+  {
+    num: '05',
+    title: 'Завершение',
+    text: 'Когда достигаем цели — сокращаем частоту, закрепляем результаты, даю инструменты для самостоятельной поддержки. Дверь всегда открыта для нового запроса.',
+  },
+];
+
+const firstSession = [
+  {
+    icon: '',
+    title: 'Просто поговорим',
+    text: 'Я задам несколько вопросов: что сейчас происходит, что хотелось бы изменить. Никаких анкет и «правильных» ответов. Говорите столько, сколько комфортно.',
+  },
+  {
+    icon: '',
+    title: 'Не нужно сразу нырять в боль',
+    text: 'Пробная консультация — это знакомство. Глубокая работа начнётся позже, когда появится доверие.',
+  },
+  {
+    icon: '',
+    title: 'В конце — ясность',
+    text: 'После встречи вы поймёте, в каком направлении двигаться и подходит ли вам этот формат. Никаких обязательств — только ваш выбор.',
+  },
+  {
+    icon: '',
+    title: 'Готовиться не нужно',
+    text: 'Не нужно формулировать запрос, вести дневник или готовить «историю болезни». Просто придите — разберёмся вместе.',
+  },
+];
+
+const faqs = [
+  { q: 'Как понять, что мне нужен психолог?', a: 'Если внутри есть ощущение, что что-то не так — это уже достаточный повод прийти. Не нужно ждать «дна» или искать вескую причину. Давайте вместе мягко разберёмся на пробной консультации: посмотрим, с чем вы пришли, и решим, чем я могу быть полезна именно вам.' },
+  { q: 'Что мне нужно будет рассказывать?', a: 'Только то, к чему вы готовы. Я никогда не буду торопить или заставлять говорить о чём-то раньше времени. Темп — ваш.' },
+  { q: 'А если я заплачу / разозлюсь / замолчу?', a: 'Всё это — часть работы. Терапия — безопасное пространство для любых чувств, без оценки и осуждения.' },
+  { q: 'Онлайн или очно — что лучше?', a: 'Оба формата работают. Выбирайте то, что удобнее. Главное — чтобы вам было комфортно.' },
+  { q: 'Как часто нужно встречаться?', a: 'Оптимально — 1 раз в неделю. Это даёт достаточно времени для изменений между сессиями.' },
+  { q: 'Сколько длится терапия?', a: 'Зависит от запроса. Иногда хватает нескольких встреч, иногда нужна долгая работа — решаем вместе.' },
+  { q: 'Будут ли домашние задания?', a: 'Иногда предлагаю простые практики — только если вы сами захотите и это будет уместно.' },
+  { q: 'Конфиденциальность гарантирована?', a: 'Абсолютно. Всё, что происходит в терапии, остаётся между нами.' },
+  { q: 'Работаете с парами?', a: 'Нет, только индивидуально.' },
+  { q: 'Работаете с детьми?', a: 'Нет, только со взрослыми.' },
+  { q: 'Что если передумаю после пробной консультации?', a: 'Ничего страшного. Пробная консультация — это знакомство, не обязательство. Вы вправе решить, подходит вам это или нет — и я отнесусь к любому решению с уважением.' },
+];
+
+const canonical = canonicalFromAstro(Astro.site, Astro.url);
+const jsonLd = processPageJsonLd({ canonical, title, description }, faqs);
 ---
 
-<BaseLayout title={title} description={description}>
-  <section class="section">
-    <div class="container container--narrow prose">
-      <h1>Как проходит терапия</h1>
-      <p>
-        Если вы здесь — значит, вы уже задумались о терапии. И, возможно, у вас много вопросов: «Как это будет?», «А что, если мне не подойдёт?», «Что мне нужно будет говорить?»
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <section class="page-hero section">
+    <div class="container">
+      <h1>От пробной консультации<br/>до результата</h1>
+      <p class="page-hero__lead">
+        Если вы задумались о терапии, у вас, возможно, много вопросов: «Как это будет?», «Что мне нужно говорить?», «А вдруг станет только хуже?». Неизвестность тревожит — это нормально.
       </p>
-      <p>Это нормально. Неизвестность тревожит. Поэтому я хочу рассказать всё максимально прозрачно.</p>
-
-      <h2>Путь от первой встречи до результата</h2>
-
-      <h3>Шаг 1: Вы пишете мне</h3>
-      <p>
-        Напишите в WhatsApp, Telegram или на почту. Коротко опишите, что вас беспокоит. Я отвечу в течение 24 часов, и мы договоримся о времени первой встречи.
+      <p class="page-hero__lead page-hero__lead--follow">
+        Здесь я постаралась собрать ответы на вопросы, которые чаще всего возникают перед пробной консультацией — чтобы вы пришли на неё без страха и неопределённости и знали, как будет выглядеть наш путь.
       </p>
-      <p>
-        Вам не нужно формулировать «правильный запрос» — достаточно написать «мне плохо, хочу разобраться» или «не знаю, с чего начать».
-      </p>
+    </div>
+  </section>
 
-      <h3>Шаг 2: Первая консультация</h3>
-      <p><strong>Длительность:</strong> 60 минут</p>
-      <p>
-        <strong>Формат:</strong> онлайн (Zoom / Google Meet / Telegram) или очно в {siteConfig.city}
-      </p>
-      <p><strong>Стоимость:</strong> см. раздел <a href={`${import.meta.env.BASE_URL}pricing`}>Стоимость</a></p>
-      <p>На первой встрече мы:</p>
-      <ul>
-        <li><strong>Знакомимся</strong> — я расскажу о себе, методах и принципах работы. Вы — о том, что привело вас в терапию.</li>
-        <li><strong>Исследуем запрос</strong> — я задам вопросы, чтобы лучше понять вашу ситуацию.</li>
-        <li><strong>Подбираю метод</strong> — предложу подход и объясню, почему он подходит.</li>
-        <li><strong>Обсуждаем формат</strong> — как часто встречаться, чего ожидать.</li>
-        <li><strong>Вы решаете</strong> — первая встреча не обязательство. Если почувствуете, что это «не ваше» — ничего страшного.</li>
-      </ul>
+  <!-- Шаги -->
+  <section class="steps-section section section--alt" aria-labelledby="steps-heading">
+    <div class="container">
+      <h2 id="steps-heading">Шаг за шагом</h2>
+      <div class="steps-zigzag">
+        {steps.map((step, i) => (
+          <div class:list={['sz-item', i % 2 === 1 ? 'sz-item--right' : 'sz-item--left']}>
+            <div class="sz-item__card">
+              <div class="sz-item__num" aria-hidden="true">{step.num}</div>
+              <h3 class="sz-item__title">{step.title}</h3>
+              <p class="sz-item__text">{step.text}</p>
+            </div>
+            <div class="sz-item__connector" aria-hidden="true">
+              <div class="sz-item__dot"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
 
-      <h3>Шаг 3: Регулярные сеансы</h3>
-      <p><strong>Длительность:</strong> 60 минут. <strong>Периодичность:</strong> обычно 1 раз в неделю.</p>
-      <p>
-        Каждый сеанс выстраивается индивидуально — через разговор, тело и образы, глубинную релаксацию или творчество. Я гибко комбинирую методы в рамках одной сессии.
-      </p>
+  <section class="final-cta section" aria-labelledby="process-cta-heading">
+    <div class="container">
+      <div class="final-cta__inner">
+        <h2 id="process-cta-heading">Я буду рядом<br /><em>на этом пути</em></h2>
+        <p>
+          Напишите мне в любое время. Не нужно знать, «правильный» ли у вас запрос. Мы вместе разберёмся, что
+          происходит.
+        </p>
+        <div class="final-cta__btns">
+          <a href={`${base}/contacts`} class="btn final-cta__btn">Записаться на пробную консультацию</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-      <h3>Шаг 4: Отслеживание прогресса</h3>
-      <p>Каждые 4–6 сеансов мы делаем «чек-ап»: что изменилось, двигаемся ли к цели, нужно ли скорректировать подход.</p>
+  <!-- Первая встреча -->
+  <section class="first-session-section section" aria-labelledby="first-session-heading">
+    <div class="container">
+      <h2 id="first-session-heading">Что будет на пробной консультации</h2>
+      <p class="first-session__lead">Пробная консультация длится 30 минут, проходит онлайн и бесплатно. Это возможность познакомиться и понять, подхожу ли я вам как специалист.</p>
+      <div class="first-session-grid">
+        {firstSession.map((item) => (
+          <div class="fs-card">
+            <div class="fs-card__icon" aria-hidden="true">{item.icon}</div>
+            <h3 class="fs-card__title">{item.title}</h3>
+            <p class="fs-card__text">{item.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
 
-      <h3>Шаг 5: Завершение</h3>
-      <p>
-        Когда мы достигаем цели: сокращаем частоту встреч, закрепляем результаты, даю инструменты для самостоятельной поддержки. Дверь всегда открыта, если появится новый запрос.
-      </p>
-
-      <h2>Что ожидать от терапии</h2>
-      <h3>Первые 1–3 сеанса</h3>
-      <p>Знакомство, исследование проблемы, формирование доверия. Возможно облегчение или тревога — оба варианта нормальны.</p>
-      <h3>3–6 сеансов</h3>
-      <p>Основная работа, первые инсайты и изменения в поведении и самочувствии.</p>
-      <h3>6–12 сеансов</h3>
-      <p>Глубокие изменения: реакция на триггеры, отношения с собой и окружающими.</p>
-      <h3>12+ сеансов</h3>
-      <p>Для глубинных запросов (травмы, многолетние паттерны). Сроки примерные — каждый человек уникален.</p>
-
-      <h2>Часто задаваемые вопросы</h2>
-      <h3>Как понять, что мне нужен психолог?</h3>
-      <p>Если вы задаёте этот вопрос — скорее всего, нужен. Не обязательно ждать «дна».</p>
-      <h3>Что мне нужно будет рассказывать?</h3>
-      <p>Только то, к чему вы готовы. Я никогда не буду заставлять вас говорить о чём-то раньше времени.</p>
-      <h3>А если я заплачу / разозлюсь / замолчу?</h3>
-      <p>Это нормально и приветствуется. Терапия — безопасное пространство для любых чувств.</p>
-      <h3>Онлайн или очно — что лучше?</h3>
-      <p>Оба формата могут быть эффективны. Выбирайте то, что удобнее.</p>
-      <h3>Как часто нужно встречаться?</h3>
-      <p>Оптимально — 1 раз в неделю.</p>
-      <h3>Сколько длится терапия?</h3>
-      <p>Зависит от запроса: от нескольких сеансов до длительной работы при глубинных темах.</p>
-      <h3>Будут ли домашние задания?</h3>
-      <p>Иногда предлагаю простые практики — только если вы готовы и это действительно поможет.</p>
-      <h3>Что если метод мне не подойдёт?</h3>
-      <p>Обсудим честно и скорректируем подход. Интегративный метод даёт разные инструменты.</p>
-      <h3>Конфиденциальность гарантирована?</h3>
-      <p>Абсолютно. Всё, что происходит в терапии, остаётся в терапии.</p>
-
-      <h2>Готовы попробовать?</h2>
-      <CTA />
+  <!-- FAQ -->
+  <section class="faq-section section section--alt" aria-labelledby="faq-heading">
+    <div class="container">
+      <div class="faq-section__intro">
+        <h2 id="faq-heading">Что спрашивают чаще всего</h2>
+      </div>
+      <div class="faq-section__grid">
+        <div class="faq-section__col faq-section__col--faq">
+          <div class="mini-faq">
+            {faqs.map((item) => (
+              <details class="mfaq">
+                <summary>{item.q}</summary>
+                <p>{item.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+        <aside class="faq-section__col faq-section__col--photo">
+          <div class="faq-photo-block" role="img" aria-label="Фотография">
+            <span class="faq-photo-block__label" aria-hidden="true">Фотография</span>
+          </div>
+        </aside>
+      </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  /* «Шаг за шагом»: суммарный зазор сверху −70% (padding секции + margin h2) */
+  .steps-section.section {
+    padding-top: calc(var(--space-xl) * 0.3);
+  }
+
+  .steps-section #steps-heading {
+    margin-top: calc(var(--space-lg) * 0.3);
+  }
+
+  .first-session-section.section {
+    padding-top: calc(var(--space-xl) * 0.3);
+  }
+
+  .page-hero {
+    padding-top: calc(var(--space-xl) / 2);
+    padding-bottom: var(--space-lg);
+  }
+
+  .page-hero__lead {
+    max-width: 100%;
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+    margin-top: var(--space-sm);
+  }
+
+  .page-hero__lead--follow {
+    margin-top: 0;
+  }
+
+  /* Steps zigzag */
+  .steps-zigzag {
+    position: relative;
+    margin-top: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  /* Center vertical line on desktop */
+  @media (min-width: 768px) {
+    .steps-zigzag::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      background: var(--color-border);
+      border-radius: 2px;
+    }
+  }
+
+  .sz-item {
+    display: grid;
+    gap: var(--space-md);
+    align-items: center;
+    position: relative;
+  }
+
+  @media (min-width: 768px) {
+    .sz-item {
+      grid-template-columns: 1fr 40px 1fr;
+    }
+
+    .sz-item--left .sz-item__card {
+      grid-column: 1;
+    }
+
+    .sz-item--left .sz-item__connector {
+      grid-column: 2;
+    }
+
+    .sz-item--left::after {
+      content: '';
+      grid-column: 3;
+    }
+
+    .sz-item--right .sz-item__card {
+      grid-column: 3;
+      order: 3;
+    }
+
+    .sz-item--right .sz-item__connector {
+      grid-column: 2;
+      order: 2;
+    }
+
+    .sz-item--right::before {
+      content: '';
+      grid-column: 1;
+      order: 1;
+    }
+  }
+
+  .sz-item__card {
+    background: var(--color-surface-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md) var(--space-lg);
+    transition: box-shadow 0.2s;
+  }
+
+  .sz-item__card:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  .sz-item__num {
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-border);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .sz-item__title {
+    margin: 0 0 0.4rem;
+    font-size: 1.05rem;
+    color: var(--color-text);
+  }
+
+  .sz-item__text {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .sz-item__connector {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .sz-item__connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  .sz-item__dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    border: 3px solid var(--color-bg-alt);
+    box-shadow: 0 0 0 2px var(--color-accent);
+  }
+
+  /* First session */
+  .first-session__lead {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  .first-session-grid {
+    display: grid;
+    gap: var(--space-sm);
+    margin-top: var(--space-lg);
+  }
+
+  @media (min-width: 640px) {
+    .first-session-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .fs-card {
+    background: var(--color-surface-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    transition: border-color 0.2s;
+  }
+
+  .fs-card:hover {
+    border-color: var(--color-accent);
+  }
+
+  .fs-card__icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.6rem;
+    line-height: 1;
+  }
+
+  .fs-card__title {
+    margin: 0 0 0.4rem;
+    font-size: 1rem;
+    color: var(--color-text);
+  }
+
+  .fs-card__text {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+  }
+
+  /* FAQ: заголовок на всю ширину; ниже — узкая колонка вопросов + шире фото; верх фото = верх первого вопроса */
+  .faq-section__intro h2 {
+    margin-top: 0.25rem;
+  }
+
+  .faq-section__intro {
+    margin-bottom: var(--space-lg);
+  }
+
+  .faq-section__grid {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: stretch;
+  }
+
+  @media (min-width: 900px) {
+    .faq-section__grid {
+      grid-template-columns: minmax(0, 0.38fr) minmax(0, 0.62fr);
+      gap: var(--space-xl) var(--space-lg);
+    }
+
+    .faq-section__col--faq {
+      min-width: 0;
+    }
+
+    .faq-section__col--photo {
+      align-self: stretch;
+      display: flex;
+    }
+  }
+
+  .faq-photo-block {
+    flex: 1;
+    min-height: 100%;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(145deg, var(--color-surface-white), var(--color-bg-alt));
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-md);
+    box-shadow: var(--shadow-md);
+  }
+
+  @media (max-width: 899px) {
+    .faq-photo-block {
+      aspect-ratio: 4 / 5;
+    }
+  }
+
+  .faq-photo-block__label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+
+  /* FAQ accordion (как на странице контактов) */
+  .faq-section .mini-faq {
+    margin-top: 0;
+  }
+
+  .mini-faq {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: none;
+  }
+
+  .mfaq {
+    background: var(--color-surface-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .mfaq summary {
+    padding: 0.85rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-text);
+    transition: background 0.15s;
+    user-select: none;
+  }
+
+  .mfaq summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mfaq summary::after {
+    content: '+';
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+  }
+
+  .mfaq[open] summary::after {
+    content: '−';
+  }
+
+  .mfaq summary:hover {
+    background: var(--color-bg-alt);
+  }
+
+  .mfaq p {
+    padding: 0 1rem 0.85rem;
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    border-top: 1px solid var(--color-border);
+    line-height: 1.55;
+  }
+
+  /* Финальный CTA (как на главной) */
+  .final-cta.section {
+    padding-top: calc(var(--space-xl) * 0.3);
+    padding-bottom: var(--space-lg);
+  }
+
+  .final-cta {
+    background: var(--color-bg-alt);
+  }
+
+  .final-cta__inner {
+    max-width: 680px;
+    margin-inline: auto;
+    text-align: center;
+    padding: 0 0 var(--space-md);
+  }
+
+  .final-cta__inner h2 {
+    font-size: clamp(1.8rem, 4vw, 2.75rem);
+    margin-top: 0;
+  }
+
+  .final-cta__inner h2 em {
+    color: var(--color-accent);
+    font-style: italic;
+  }
+
+  .final-cta__inner p {
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
+    max-width: 480px;
+    margin: 0 auto var(--space-md);
+  }
+
+  .final-cta__btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  .final-cta__btns .btn {
+    flex: 0 1 auto;
+    text-align: center;
+  }
+
+  .final-cta__btns .final-cta__btn {
+    background: var(--color-accent);
+    border: 2px solid var(--color-accent);
+    color: var(--color-surface-white);
+  }
+
+  .final-cta__btns .final-cta__btn:hover {
+    background: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
+    color: var(--color-surface-white);
+    transform: translateY(-1px);
+  }
+
+  .final-cta__btns .final-cta__btn:focus-visible {
+    outline-color: var(--color-accent);
+  }
+</style>
